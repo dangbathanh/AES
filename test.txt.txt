@@ -1,0 +1,1 @@
+Khi sử dụng chế độ CBC (Cipher Block Chaining) trong AES (Advanced Encryption Standard), mỗi khối dữ liệu đầu ra của quá trình mã hóa sẽ được XOR với khối dữ liệu tiếp theo trước khi được mã hóa. Điều này làm cho mỗi khối đầu ra phụ thuộc vào khối trước đó, tạo ra một chuỗi liên tục của các khối dữ liệu được mã hóa. abcd
