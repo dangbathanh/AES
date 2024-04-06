@@ -4,7 +4,7 @@ public abstract class AES {
     // Holds the expanded Key
     protected int[][] expandedKey;
     // Holds the initialization vector.
-    protected int[][] initializationVector = new int[4][4];
+  //  protected int[][] initializationVector = new int[4][4];
 
     public int[][] subBytes(int[][] arr) {
         for (int i = 0; i < arr.length; i++) {
@@ -30,46 +30,6 @@ public abstract class AES {
         return arr;
     }
 
-
-
- /*   private void shift1Row(int[] state, int row) { //row = số thứ tự hàng, hàng số bn thì dịch trái bấy nhiêu
-        // Lưu trữ phần tử đầu tiên của hàng
-        int[] temp = new int[row];
-        for (int i = 0; i < row; i++) {
-            temp[i] = state[i];
-        }
-
-        // Dịch trái các phần tử còn lại của hàng
-        for (int i = 0; i < 4 - row; i++) {
-            state[i] = state[i + row];
-        }
-
-        // Gán các phần tử cuối cùng của hàng bằng các phần tử đã lưu trữ
-        for (int i = 0; i < row; i++) {
-            state[4 - row + i] = temp[i];
-        }
-    }*/
-
-  /*  void leftRotate(int arr[], int shiftAmount)
-    {
-        // Creating temp array of size d
-        int[] temp = new int[shiftAmount];
-        int n = arr.length;
-        // Copying first d element in array temp
-        for (int i = 0; i < shiftAmount; i++)
-            temp[i] = arr[i];
-
-        // Moving the rest element to
-        // index zero to N-d
-        for (int i = shiftAmount; i < n; i++)
-            arr[i - shiftAmount] = arr[i];
-
-        // Copying the temp array element
-        // in original array
-        for (int i = 0; i < shiftAmount; i++)
-            arr[i + n - shiftAmount] = temp[i];
-    }
-*/
 
     public int[] leftRotate(int[] arr, int shiftAmount)
     {
@@ -235,62 +195,7 @@ public abstract class AES {
         return 0;
     }
 
-    /**
-     *The keyScheduling algorithm to expand a short key into a number of separate round keys.
-     *
-    // * @param key the key in which key expansion will be computed upon.
-     * @return the fully computed expanded key for the AES encryption/decryption.
-     */
-   /* public int[][] keySchedule(String key)
-    {
 
-        int binkeysize = key.length() * 4;
-        int colsize = binkeysize + 48 - (32 * ((binkeysize / 64) - 2)); //size of key scheduling will be based on the binary size of the key.
-        int[][] keyMatrix = new int[4][colsize / 4]; //creates the matrix for key scheduling
-        int rconpointer = 1;
-
-        final int keycounter = binkeysize / 32;
-        int k;
-
-        for (int i = 0; i < keycounter; i++) //the first 1 (128-bit key) or 2 (256-bit key) set(s) of 4x4 matrices are filled with the key.
-        {
-            for (int j = 0; j < 4; j++) {
-                keyMatrix[j][i] = Integer.parseInt(key.substring((8 * i) + (2 * j), (8 * i) + (2 * j + 2)), 16);
-            }
-        }
-
-        int keypoint = keycounter;
-        while (keypoint < (colsize / 4)) {
-            int temp = keypoint % keycounter;
-            if (temp == 0) {
-                int[] t = new int[6];
-                for (k = 0; k < 4; k++) {
-                    t[k] = keyMatrix[k][keypoint - 1];
-                }
-                t = schedule_core(t, rconpointer++);
-                for (k = 0; k < 4; k++) {
-                    keyMatrix[k][keypoint] = t[k] ^ keyMatrix[k][keypoint - keycounter];
-                }
-                keypoint++;
-            } else if (temp == 5) {
-                for (k = 0; k < 4; k++) {
-                    int hex = keyMatrix[k][keypoint - 1];
-                    keyMatrix[k][keypoint] = Constants.sbox[hex / 16][hex % 16] ^ keyMatrix[k][keypoint - keycounter];
-                }
-                keypoint++;
-            } else {
-                int ktemp = keypoint + 5;
-                while (keypoint < ktemp) {
-                    for (k = 0; k < 4; k++) {
-                        keyMatrix[k][keypoint] = keyMatrix[k][keypoint - 1] ^ keyMatrix[k][keypoint - keycounter];
-                    }
-                    keypoint++;
-                }
-            }
-        }
-        return keyMatrix;
-    }
-*/
 
     /**
      * For every (binary key size / 32)th column in the expanded key. We compute a special column
@@ -377,29 +282,9 @@ public abstract class AES {
      * Subs with Sbox
      * And XORS each byte with an rcon constant
      */
-    private int[] gFunction(int[] a, int index) {
-        int[] tmp = new int[4];
 
-        // Rotate similar to shift rows
-        tmp[0] = a[1];
-        tmp[1] = a[2];
-        tmp[2] = a[3];
-        tmp[3] = a[0];
 
-        // Sub with sBox
-        int val;
-        for (int i = 0; i < 4; i++) {
-            val = tmp[i];
-            tmp[i] = Constants.sbox[val / 16][val % 16];
-        }
-
-        // Finally XOR with rcon
-        tmp[0] ^= Constants.rcon[index];
-
-        return tmp;
-    }
-
-    public void printState(int[][] state) {
+   /* public void printState(int[][] state) {
         for (int i = 0; i < state.length; i++) {
 
             for (int j = 0; j < state[i].length; j++) {
@@ -407,33 +292,12 @@ public abstract class AES {
             }
             System.out.println(); // Xuống dòng sau khi in xong mỗi hàng
         }
-    }
+    }*/
 
 
-    /**
-     * Helper function to perform deep copies on 2D array
-     */
-    protected int[][] deepCopyState(int[][] state) {
-        int[][] tmp = new int[4][4];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                tmp[i][j] = state[i][j];
-            }
-        }
 
-        return tmp;
-    }
 
-    /**
-     * Parse IV into a useful block array
-     */
-    public void parseIV(String iv) {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                this.initializationVector[j][i] = Integer.parseInt(iv.substring((8 * i) + (2 * j), (8 * i) + (2 * j + 2)), 16);
-            }
-        }
-    }
+
 
     /**
      * Converts integer array state to a string

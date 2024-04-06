@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HexFormat;
 import java.util.Objects;
 import java.lang.Object;
@@ -11,7 +12,9 @@ public class FileInput extends JFrame implements ActionListener{
     private JTextField selectedFileNameFieldEncrypt;
     private JTextField selectedFileNameFieldDecrypt;
     private JLabel outputFileNameLabelEncrypt;
+    private JTextField outputFileNameFieldEncrypt;
     private JLabel outputFileNameLabelDecrypt;
+    private JTextField outputFileNameFieldDecrypt;
     private JTextField keyTextFieldEncrypt;
     private JTextField keyTextFieldDecrypt;
     private File selectedFileEncrypt;
@@ -48,82 +51,6 @@ public class FileInput extends JFrame implements ActionListener{
 
         add(tabbedPane);
 
-
-
-
-
-
-
-
-
-    /*    JLabel encryptionMethodLabel = new JLabel("Encryption Method:");
-        encryptionMethodLabel.setBounds(10, 10, 120, 20);
-        add(encryptionMethodLabel);
-        encryptionMethodComboBox = new JComboBox<>(new String[]{"AES-128", "AES-192", "AES-256"});
-        encryptionMethodComboBox.setBounds(130, 10, 120, 20);
-        add(encryptionMethodComboBox);
-
-        // Thêm label và combo box cho chế độ mã hóa
-        JLabel encryptionModeLabel = new JLabel("Encryption Mode:");
-        encryptionModeLabel.setBounds(10, 40, 120, 20);
-        add(encryptionModeLabel);
-        encryptionModeComboBox = new JComboBox<>(new String[]{"CBC"});
-        encryptionModeComboBox.setBounds(130, 40, 120, 20);
-        encryptionModeComboBox.addActionListener(this);
-        add(encryptionModeComboBox);
-
-        JLabel keyLabel = new JLabel("Key:");
-        keyLabel.setBounds(10, 80, 30, 20);
-        add(keyLabel);
-
-        JTextField keyTextField = new JTextField(20);
-        keyTextField.setBounds(40, 80, 300, 20);
-        add(keyTextField);
-
-        // Thêm label và textfield cho IV
-        ivLabel = new JLabel("Initialization Vector (IV):");
-        ivLabel.setBounds(10, 120, 150, 20);
-       // ivLabel.setVisible(false);
-        add(ivLabel);
-
-        ivTextField = new JTextField(20);
-        ivTextField.setBounds(160, 120, 300, 20);
-      //  ivTextField.setVisible(false);
-        add(ivTextField);
-
-
-
-        selectedFileNameField = new JTextField(20);
-        selectedFileNameField.setEditable(false);
-        selectedFileNameField.setBounds(10, 150, 200, 20);
-        add(selectedFileNameField);
-
-        JButton chooseButton = new JButton("Choose File");
-        chooseButton.addActionListener(this);
-        chooseButton.setBounds(220, 150, 120, 20);
-        add(chooseButton);
-
-
-        JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(this);
-        submitButton.setBounds(50, 180, 120, 30);
-        add(submitButton);
-
-        outputFileNameLabel = new JLabel();
-        outputFileNameLabel.setBounds(10, 220, 150, 20);
-        outputFileNameLabel.setVisible(false);
-        add(outputFileNameLabel);
-
-
-
-        saveButton = new JButton("Save");
-        saveButton.addActionListener(this);
-        saveButton.setBounds(180, 220, 120, 20);
-        saveButton.setEnabled(false);
-        saveButton.setVisible(false);
-        add(saveButton);
-
-     */
     }
 
 
@@ -166,15 +93,18 @@ public class FileInput extends JFrame implements ActionListener{
         //  ivTextField.setVisible(false);
         panel.add(ivTextFieldEncrypt);
 
+        JLabel selectedFileNameFieldEncryptLabel = new JLabel("Choose Encrypt File:");
+        selectedFileNameFieldEncryptLabel.setBounds(10, 150, 120, 20);
+        panel.add(selectedFileNameFieldEncryptLabel);
 
         selectedFileNameFieldEncrypt = new JTextField(20);
         selectedFileNameFieldEncrypt.setEditable(false);
-        selectedFileNameFieldEncrypt.setBounds(10, 150, 200, 20);
+        selectedFileNameFieldEncrypt.setBounds(140, 150, 200, 20);
         panel.add(selectedFileNameFieldEncrypt);
 
         JButton chooseButtonEncrypt = new JButton("Choose Encrypt File");
         chooseButtonEncrypt.addActionListener(this);
-        chooseButtonEncrypt.setBounds(220, 150, 120, 20);
+        chooseButtonEncrypt.setBounds(360, 150, 170, 20);
         panel.add(chooseButtonEncrypt);
 
 
@@ -183,15 +113,21 @@ public class FileInput extends JFrame implements ActionListener{
         submitButtonEncrypt.setBounds(50, 180, 120, 30);
         panel.add(submitButtonEncrypt);
 
-        outputFileNameLabelEncrypt = new JLabel();
-        outputFileNameLabelEncrypt.setBounds(10, 220, 150, 20);
+        outputFileNameLabelEncrypt = new JLabel("File Encrypted:");
+        outputFileNameLabelEncrypt.setBounds(10, 220, 90, 20);
         outputFileNameLabelEncrypt.setVisible(false);
         panel.add(outputFileNameLabelEncrypt);
+
+        outputFileNameFieldEncrypt = new JTextField();
+        outputFileNameFieldEncrypt.setEditable(false);
+        outputFileNameFieldEncrypt.setBounds(110, 220, 150, 20);
+        outputFileNameFieldEncrypt.setVisible(false);
+        panel.add(outputFileNameFieldEncrypt);
 
 
         saveButtonEncrypt = new JButton("Save Encrypt File");
         saveButtonEncrypt.addActionListener(this);
-        saveButtonEncrypt.setBounds(180, 220, 120, 20);
+        saveButtonEncrypt.setBounds(270, 220, 120, 20);
         saveButtonEncrypt.setEnabled(false);
         saveButtonEncrypt.setVisible(false);
         panel.add(saveButtonEncrypt);
@@ -240,16 +176,18 @@ public class FileInput extends JFrame implements ActionListener{
         //  ivTextField.setVisible(false);
         panel.add(ivTextFieldDecrypt);
 
-
+        JLabel selectedFileNameFieldDecryptLabel = new JLabel("Choose Decrypt File:");
+        selectedFileNameFieldDecryptLabel.setBounds(10, 150, 120, 20);
+        panel.add(selectedFileNameFieldDecryptLabel);
 
         selectedFileNameFieldDecrypt = new JTextField(20);
         selectedFileNameFieldDecrypt.setEditable(false);
-        selectedFileNameFieldDecrypt.setBounds(10, 150, 200, 20);
+        selectedFileNameFieldDecrypt.setBounds(140, 150, 200, 20);
         panel.add(selectedFileNameFieldDecrypt);
 
         JButton chooseButtonDecrypt = new JButton("Choose Decrypt File");
         chooseButtonDecrypt.addActionListener(this);
-        chooseButtonDecrypt.setBounds(220, 150, 120, 20);
+        chooseButtonDecrypt.setBounds(360, 150, 120, 20);
         panel.add(chooseButtonDecrypt);
 
 
@@ -258,16 +196,23 @@ public class FileInput extends JFrame implements ActionListener{
         submitButtonDecrypt.setBounds(50, 180, 120, 30);
         panel.add(submitButtonDecrypt);
 
-        outputFileNameLabelDecrypt = new JLabel();
-        outputFileNameLabelDecrypt.setBounds(10, 220, 150, 20);
+        outputFileNameLabelDecrypt = new JLabel("File Decrypted:");
+        outputFileNameLabelDecrypt.setBounds(10, 220, 90, 20);
         outputFileNameLabelDecrypt.setVisible(false);
         panel.add(outputFileNameLabelDecrypt);
+
+
+        outputFileNameFieldDecrypt = new JTextField();
+        outputFileNameFieldDecrypt.setEditable(false);
+        outputFileNameFieldDecrypt.setBounds(110, 220, 150, 20);
+        outputFileNameFieldDecrypt.setVisible(false);
+        panel.add(outputFileNameFieldDecrypt);
 
 
 
         saveButtonDecrypt = new JButton("Save Decrypt File");
         saveButtonDecrypt.addActionListener(this);
-        saveButtonDecrypt.setBounds(180, 220, 120, 20);
+        saveButtonDecrypt.setBounds(270, 220, 120, 20);
         saveButtonDecrypt.setEnabled(false);
         saveButtonDecrypt.setVisible(false);
         panel.add(saveButtonDecrypt);
@@ -332,7 +277,7 @@ public class FileInput extends JFrame implements ActionListener{
                     outputFileEncrypt = File.createTempFile("temp_", ".txt");
                     //int blockSize = 16;
                     String data = dataToHexString(iv);
-                    String test = "";
+                 //   String test = "";
                     try (FileInputStream fis = new FileInputStream(filePathEncrypt);
                          BufferedInputStream bis = new BufferedInputStream(fis);
                         FileOutputStream fos = new FileOutputStream(outputFileEncrypt);
@@ -360,7 +305,8 @@ public class FileInput extends JFrame implements ActionListener{
 
                             bos.write(output);
                         }
-                    //    System.out.print(test);
+                        // Thêm 16 byte đệm cuối file
+                        bos.write(hexToBytes(cbc.encrypt("10101010101010101010101010101010", data, key)));
                         bos.close();
                         fos.close();
                     } catch (IOException ex) {
@@ -369,9 +315,10 @@ public class FileInput extends JFrame implements ActionListener{
 
 
                     // Hiển thị biểu tượng và tên file output
-                    outputFileNameLabelEncrypt.setText(outputFileEncrypt.getName());
+                    outputFileNameFieldEncrypt.setText(outputFileEncrypt.getName());
 
                     outputFileNameLabelEncrypt.setVisible(true);
+                    outputFileNameFieldEncrypt.setVisible(true);
                     // Kích hoạt nút lưu
                     saveButtonEncrypt.setEnabled(true);
                     saveButtonEncrypt.setVisible(true);
@@ -460,11 +407,12 @@ public class FileInput extends JFrame implements ActionListener{
                     }
                     // Tạo file tạm và ghi dữ liệu vào file
                     outputFileDecrypt = File.createTempFile("temp_", ".txt");
-                    //int blockSize = 16;
+
                     String data = dataToHexString(iv);
                     String previousHexString = "";
-                    boolean bFirstBlock = true;
-                    String test = "";
+
+                    String result = "";
+                    String hexString = "";
 
                     try (FileInputStream fis = new FileInputStream(filePathDecrypt);
                          BufferedInputStream bis = new BufferedInputStream(fis);
@@ -474,48 +422,64 @@ public class FileInput extends JFrame implements ActionListener{
                         int bytesRead;
                         byte[] block = new byte[16];
                         byte[] previousBlock = new byte[16];
+                        byte[] previousDecrypt = new byte[16];
+                        bytesRead = bis.read(block);
+                        if (bytesRead == -1) {
+                            // File không có đủ dữ liệu để đọc
+                            return;
+                        }
+                            previousBlock = block;
+                            previousHexString = dataToHexString(iv);
+
+                            hexString = bytesToHex(block);
+
+                            result=cbc.decrypt(hexString, previousHexString, key);
+
+                            previousDecrypt = hexToBytes(result);
+                            previousHexString = bytesToHex(previousBlock);
+
+
+
+
                         while ((bytesRead = bis.read(block)) != -1) {
-                            // Padding with zeros if the last block is not full
 
 
-                            if (!bFirstBlock) {
+
                                 // Nếu không phải là khối đầu tiên, chuyển đổi khối trước đó thành chuỗi hexa và in ra
-                                previousHexString = bytesToHex(previousBlock);
-                            } else {
-                                previousHexString = dataToHexString(iv);
-                                bFirstBlock = false; // Đánh dấu khối hiện tại không phải là khối đầu tiên
-                            }
+
+
 
                             // Convert block to hex string
-                            String hexString = bytesToHex(block);
-                            System.out.println("----------------------");
-                            System.out.println("hexString"+hexString);
-                            System.out.println("----------------------");
+                            hexString = bytesToHex(block);
+
 
                             // Convert hex string back to byte array
-                            test=cbc.decrypt(hexString, previousHexString, key);
-                            System.out.println("----------------------");
-                            System.out.println("result: "+test);
-                            System.out.println("----------------------");
-                            output = hexToBytes(test);
+                            result=cbc.decrypt(hexString, previousHexString, key);
 
-                            System.arraycopy(block, 0, previousBlock, 0, block.length);
+                            output = hexToBytes(result);
+
+
                             // Kiểm tra xem chuỗi có chứa PKCS7 padding không
-
-                            bos.write(removePadding(output));
+                            if(Arrays.equals(output, new byte[]{0x10, 0x10, 0x10, 0x10, 0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10})){
+                                    previousDecrypt = removePadding(previousDecrypt);
+                                    bos.write(previousDecrypt);
+                            }else{
+                                bos.write(previousDecrypt);
+                            }
+                            System.arraycopy(block, 0, previousBlock, 0, block.length);
+                            previousHexString = bytesToHex(previousBlock);
+                            previousDecrypt = output;
                         }
-                        //    System.out.print(test);
                         bos.close();
                         fos.close();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
 
-
                     // Hiển thị biểu tượng và tên file output
-                    outputFileNameLabelDecrypt.setText(outputFileDecrypt.getName());
-
+                    outputFileNameFieldDecrypt.setText(outputFileDecrypt.getName());
                     outputFileNameLabelDecrypt.setVisible(true);
+                    outputFileNameFieldDecrypt.setVisible(true);
                     // Kích hoạt nút lưu
                     saveButtonDecrypt.setEnabled(true);
                     saveButtonDecrypt.setVisible(true);
@@ -588,6 +552,11 @@ public class FileInput extends JFrame implements ActionListener{
         int paddingLength = output[output.length - 1];
         if (paddingLength > 0 && paddingLength <= 16) {
             // Loại bỏ byte padding
+            for (int i = 16 - paddingLength; i < 15; i++) {
+                if (output[i] != paddingLength) {
+                    return output;
+                }
+            }
             byte[] result = new byte[output.length - paddingLength];
             System.arraycopy(output, 0, result, 0, result.length);
             return result;
