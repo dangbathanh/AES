@@ -32,6 +32,10 @@ public class FileInput extends JFrame implements ActionListener{
     private JLabel ivLabel;
     private JTextField ivTextFieldEncrypt;
     private JTextField ivTextFieldDecrypt;
+    private JLabel timeEncrypt;
+    private JLabel timeDecrypt;
+    private JLabel timeEncryptLabel;
+    private JLabel timeDecryptLabel;
     AES cbc = new CBC();
     public FileInput() {
         setTitle("Mã hóa AES");
@@ -132,6 +136,16 @@ public class FileInput extends JFrame implements ActionListener{
         saveButtonEncrypt.setVisible(false);
         panel.add(saveButtonEncrypt);
 
+        timeEncryptLabel = new JLabel("Time Encrypted:");
+        timeEncryptLabel.setBounds(10, 240, 120, 20);
+        timeEncryptLabel.setVisible(false);
+        panel.add(timeEncryptLabel);
+
+        timeEncrypt = new JLabel();
+        timeEncrypt.setBounds(140, 240, 50, 20);
+        timeEncrypt.setVisible(false);
+        panel.add(timeEncrypt);
+
         // Thêm các thành phần khác cho tab mã hóa AES ở đây
 
         return panel;
@@ -217,7 +231,16 @@ public class FileInput extends JFrame implements ActionListener{
         saveButtonDecrypt.setVisible(false);
         panel.add(saveButtonDecrypt);
 
-        // Thêm các thành phần khác cho tab mã hóa AES ở đây
+        timeDecryptLabel = new JLabel("Time Decrypted:");
+        timeDecryptLabel.setBounds(10, 240, 120, 20);
+        timeDecryptLabel.setVisible(false);
+        panel.add(timeDecryptLabel);
+
+        timeDecrypt = new JLabel();
+        timeDecrypt.setBounds(140, 240, 50, 20);
+        timeDecrypt.setVisible(false);
+        panel.add(timeDecrypt);
+
 
         return panel;
     }
@@ -277,20 +300,21 @@ public class FileInput extends JFrame implements ActionListener{
                     outputFileEncrypt = File.createTempFile("temp_", ".txt");
                     //int blockSize = 16;
                     String data = dataToHexString(iv);
-                 //   String test = "";
+                    //   String test = "";
+                    long elapsedTimeEncrypt = 0;
                     try (FileInputStream fis = new FileInputStream(filePathEncrypt);
                          BufferedInputStream bis = new BufferedInputStream(fis);
-                        FileOutputStream fos = new FileOutputStream(outputFileEncrypt);
-                        BufferedOutputStream bos = new BufferedOutputStream(fos))
-                    {
+                         FileOutputStream fos = new FileOutputStream(outputFileEncrypt);
+                         BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+                        long startTimeEncrypt = System.currentTimeMillis();
                         int bytesRead;
                         byte[] block = new byte[16];
                         while ((bytesRead = bis.read(block)) != -1) {
                             // Padding with zeros if the last block is not full
                             if (bytesRead < 16) {
-                               // for (int i = bytesRead; i < 16; i++) {
-                              //      block[i] = 0;
-                            //    }
+                                // for (int i = bytesRead; i < 16; i++) {
+                                //      block[i] = 0;
+                                //    }
                                 for (int i = bytesRead; i < 16; i++) {
                                     block[i] = (byte) (16 - bytesRead);
                                 }
@@ -309,6 +333,8 @@ public class FileInput extends JFrame implements ActionListener{
                         bos.write(hexToBytes(cbc.encrypt("10101010101010101010101010101010", data, key)));
                         bos.close();
                         fos.close();
+                        long endTimeEncrypt = System.currentTimeMillis();
+                        elapsedTimeEncrypt = endTimeEncrypt - startTimeEncrypt;
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -319,6 +345,9 @@ public class FileInput extends JFrame implements ActionListener{
 
                     outputFileNameLabelEncrypt.setVisible(true);
                     outputFileNameFieldEncrypt.setVisible(true);
+                    timeEncrypt.setText(String.valueOf(elapsedTimeEncrypt)+" ms");
+                    timeEncryptLabel.setVisible(true);
+                    timeEncrypt.setVisible(true);
                     // Kích hoạt nút lưu
                     saveButtonEncrypt.setEnabled(true);
                     saveButtonEncrypt.setVisible(true);
@@ -413,12 +442,13 @@ public class FileInput extends JFrame implements ActionListener{
 
                     String result = "";
                     String hexString = "";
-
+                    long elapsedTimeDecrypt = 0;
                     try (FileInputStream fis = new FileInputStream(filePathDecrypt);
                          BufferedInputStream bis = new BufferedInputStream(fis);
                          FileOutputStream fos = new FileOutputStream(outputFileDecrypt);
                          BufferedOutputStream bos = new BufferedOutputStream(fos))
                     {
+                        long startTimeDecrypt = System.currentTimeMillis();
                         int bytesRead;
                         byte[] block = new byte[16];
                         byte[] previousBlock = new byte[16];
@@ -472,6 +502,8 @@ public class FileInput extends JFrame implements ActionListener{
                         }
                         bos.close();
                         fos.close();
+                        long endTimeDecrypt = System.currentTimeMillis();
+                        elapsedTimeDecrypt = endTimeDecrypt - startTimeDecrypt;
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -480,6 +512,9 @@ public class FileInput extends JFrame implements ActionListener{
                     outputFileNameFieldDecrypt.setText(outputFileDecrypt.getName());
                     outputFileNameLabelDecrypt.setVisible(true);
                     outputFileNameFieldDecrypt.setVisible(true);
+                    timeDecrypt.setText(String.valueOf(elapsedTimeDecrypt)+" ms");
+                    timeDecryptLabel.setVisible(true);
+                    timeDecrypt.setVisible(true);
                     // Kích hoạt nút lưu
                     saveButtonDecrypt.setEnabled(true);
                     saveButtonDecrypt.setVisible(true);
